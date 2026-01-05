@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <!-- Label must be unique -->
+    <key>Label</key>
+    <string>com.user.mac-to-google-drive</string>
+    
+    <!-- Path to the Python script -->
+    <key>ProgramArguments</key>
+    <array>
+        <string>/usr/bin/python3</string>
+        <string>/Users/YOUR_USERNAME/mac-to-google-drive/sync_to_drive.py</string>
+        <string>--config</string>
+        <string>/Users/YOUR_USERNAME/mac-to-google-drive/config.json</string>
+    </array>
+    
+    <!-- Run once daily at 2 AM -->
+    <key>StartCalendarInterval</key>
+    <dict>
+        <key>Hour</key>
+        <integer>2</integer>
+        <key>Minute</key>
+        <integer>0</integer>
+    </dict>
+    
+    <!-- Working directory -->
+    <key>WorkingDirectory</key>
+    <string>/Users/YOUR_USERNAME/mac-to-google-drive</string>
+    
+    <!-- Standard output log -->
+    <key>StandardOutPath</key>
+    <string>/Users/YOUR_USERNAME/mac-to-google-drive/logs/sync.log</string>
+    
+    <!-- Standard error log -->
+    <key>StandardErrorPath</key>
+    <string>/Users/YOUR_USERNAME/mac-to-google-drive/logs/sync_error.log</string>
+    
+    <!-- Run when loaded (optional, for testing) -->
+    <key>RunAtLoad</key>
+    <false/>
+    
+    <!-- Keep the job running if it crashes -->
+    <key>KeepAlive</key>
+    <false/>
+</dict>
+</plist>
