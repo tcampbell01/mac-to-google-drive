@@ -1,0 +1,14 @@
+{
+  "source_directory": "~/Documents",
+  "google_drive_folder": "Mac Backup",
+  "credentials_file": "credentials.json",
+  "token_file": "token.pickle",
+  "sync_state_file": "sync_state.json",
+  "file_extensions": [],
+  "exclude_patterns": [
+    ".DS_Store",
+    "._*",
+    "Thumbs.db"
+  ],
+  "max_file_size_mb": 100
+}

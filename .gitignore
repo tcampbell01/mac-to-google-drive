@@ -205,3 +205,15 @@ cython_debug/
 marimo/_static/
 marimo/_lsp/
 __marimo__/
+
+# Project-specific: Google Drive Sync
+# Sensitive authentication and state files
+credentials.json
+token.pickle
+sync_state.json
+config.json
+
+# Log files
+logs/
+*.log
+
