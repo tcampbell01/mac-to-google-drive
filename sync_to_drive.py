@@ -10,6 +10,7 @@ import os
 import json
 import pickle
 import argparse
+import traceback
 from pathlib import Path
 from datetime import datetime
 from typing import Set, List, Optional
@@ -161,11 +162,10 @@ class GoogleDriveSync:
         # Check exclude patterns
         exclude_patterns = self.config.get('exclude_patterns', [])
         for pattern in exclude_patterns:
+            # Check if file name matches the pattern
             if pattern.startswith('._') and file_path.name.startswith('._'):
                 return False
-            if pattern.startswith('.') and file_path.name == pattern:
-                return False
-            if pattern in file_path.name:
+            if pattern == file_path.name:
                 return False
                 
         # Check file size
@@ -185,7 +185,7 @@ class GoogleDriveSync:
                 'parents': [self.drive_folder_id]
             }
             
-            # Determine MIME type
+            # MediaFileUpload will automatically detect MIME type based on file extension
             media = MediaFileUpload(str(file_path), resumable=True)
             
             print(f"Uploading: {file_path.name}...", end=' ')
@@ -288,7 +288,6 @@ class GoogleDriveSync:
             
         except Exception as e:
             print(f"\nError during sync: {e}")
-            import traceback
             traceback.print_exc()
             return False
 
@@ -367,11 +366,47 @@ Examples:
     if args.folder:
         config['google_drive_folder'] = args.folder
         
+    # Handle dry-run mode
     if args.dry_run:
+        print("=" * 60)
         print("DRY RUN MODE - No files will be uploaded")
-        # For dry run, we could implement a preview mode
-        # For now, we'll just print the configuration
-        print(f"Configuration: {json.dumps(config, indent=2)}")
+        print("=" * 60)
+        print("\nConfiguration:")
+        print(json.dumps(config, indent=2))
+        
+        # Preview what would be synced
+        source_dir = Path(config['source_directory']).expanduser()
+        if not source_dir.exists():
+            print(f"\nError: Source directory not found: {source_dir}")
+            return
+            
+        # Create a temporary sync object to use filtering logic
+        sync = GoogleDriveSync(config)
+        
+        print(f"\nScanning directory: {source_dir}")
+        all_files = []
+        for file_path in source_dir.rglob('*'):
+            if file_path.is_file():
+                all_files.append(file_path)
+                
+        print(f"Found {len(all_files)} total files")
+        
+        # Filter files that would be synced
+        files_to_sync = [f for f in all_files if sync.should_sync_file(f)]
+        already_synced = len(all_files) - len(files_to_sync) - len([f for f in all_files if not sync.should_sync_file(f)])
+        
+        print(f"\nFiles that would be synced: {len(files_to_sync)}")
+        if files_to_sync:
+            print("\nPreview (first 10 files):")
+            for i, file_path in enumerate(files_to_sync[:10]):
+                size_mb = file_path.stat().st_size / (1024 * 1024)
+                print(f"  {i+1}. {file_path.name} ({size_mb:.2f} MB)")
+            if len(files_to_sync) > 10:
+                print(f"  ... and {len(files_to_sync) - 10} more files")
+        
+        print(f"\nFiles already synced (would be skipped): {len(sync.synced_files)}")
+        print("\nNo files were uploaded (dry-run mode)")
+        print("=" * 60)
         return
         
     # Run sync
