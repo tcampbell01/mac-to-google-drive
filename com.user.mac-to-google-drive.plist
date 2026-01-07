@@ -9,32 +9,32 @@
     <!-- Path to the Python script -->
     <key>ProgramArguments</key>
     <array>
-        <string>/usr/bin/python3</string>
-        <string>/Users/YOUR_USERNAME/mac-to-google-drive/sync_to_drive.py</string>
+        <string>/Users/teresacampbell/Desktop/mac-to-google-drive/venv/bin/python</string>
+        <string>/Users/teresacampbell/Desktop/mac-to-google-drive/sync_to_drive.py</string>
         <string>--config</string>
-        <string>/Users/YOUR_USERNAME/mac-to-google-drive/config.json</string>
+        <string>/Users/teresacampbell/Desktop/mac-to-google-drive/config.json</string>
     </array>
     
-    <!-- Run once daily at 2 AM -->
+    <!-- Run once daily at 10 AM Eastern (15:00 UTC) -->
     <key>StartCalendarInterval</key>
     <dict>
         <key>Hour</key>
-        <integer>2</integer>
+        <integer>15</integer>
         <key>Minute</key>
         <integer>0</integer>
     </dict>
     
     <!-- Working directory -->
     <key>WorkingDirectory</key>
-    <string>/Users/YOUR_USERNAME/mac-to-google-drive</string>
+    <string>/Users/teresacampbell/Desktop/mac-to-google-drive</string>
     
     <!-- Standard output log -->
     <key>StandardOutPath</key>
-    <string>/Users/YOUR_USERNAME/mac-to-google-drive/logs/sync.log</string>
+    <string>/Users/teresacampbell/Desktop/mac-to-google-drive/logs/sync.log</string>
     
     <!-- Standard error log -->
     <key>StandardErrorPath</key>
-    <string>/Users/YOUR_USERNAME/mac-to-google-drive/logs/sync_error.log</string>
+    <string>/Users/teresacampbell/Desktop/mac-to-google-drive/logs/sync_error.log</string>
     
     <!-- Run when loaded (optional, for testing) -->
     <key>RunAtLoad</key>
